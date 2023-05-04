@@ -20,3 +20,7 @@ deactivate
 ```
 
 ## Run tests
+
+```bash
+pytest
+```

@@ -14,7 +14,7 @@
 ## Input documents
 
 * payments
-* poliza
+* policies
 
 ## Models
 
@@ -24,7 +24,7 @@
 
 * Customer(User)
     * user
-    * number 
+    * number
     * name -> payments.csv -> Contratante
 
 * Agent(User)
@@ -38,8 +38,8 @@
     * periodicity -> payments.csv -> Forma de pago
 
 * Validity
-    * Poliza
-    * Periodicity
+    * policy
+    * periodicity
     * Start date -> payments.csv -> Inicio de Vigencia
     * End date -> payments.csv -> Fin de Vigencia
 

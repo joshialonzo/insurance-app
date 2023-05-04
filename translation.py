@@ -4,4 +4,5 @@ TRANSLATOR = {
     "policy": "poliza",
     "validity": "vigencia",
     "amount": "prima",
+    "surcharge": "recargo",
 }

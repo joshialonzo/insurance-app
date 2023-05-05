@@ -4,16 +4,20 @@
 
 ```bash
 # create virtual environment
-python3.11 -m venv venv
+poetry config virtualenvs.in-project true
+poetry install
 
 # activate virtual environment
-source venv/bin/activate
+poetry shell
 
 # install python requirements
-pip install -r requirements.txt
+poetry install
 
-# update pip
-pip install --upgrade pip
+# add a dependency
+poetry add <dependency>
+
+# add a dev dependency
+poetry add <dependency> -D
 
 # deactivate virtual environment
 deactivate
@@ -22,5 +26,5 @@ deactivate
 ## Run tests
 
 ```bash
-pytest
+poetry run pytest
 ```

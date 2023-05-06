@@ -1,5 +1,9 @@
-from insurance.models import Agent, Customer
-from insurance.services import create_customer
+from insurance.models import Agent, Customer, Policy
+from insurance.services import (
+    create_customer,
+    create_agent,
+    create_policy,
+)
 
 
 def test_create_customer_without_number():
@@ -22,7 +26,19 @@ def test_create_customer_with_number():
 def test_create_agent_with_number():
     agent_number = 123456789
     agent_name = "John Doe"
-    agent = Agent(agent_name, agent_number)
+    agent = create_agent(agent_name, agent_number)
     assert isinstance(agent, Agent)
     assert agent.name == agent_name
     assert agent.number == agent_number
+
+
+def test_create_policy_with_number():
+    policy_number = 123456789
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    periodicity = "monthly"
+    policy = create_policy(policy_number, customer, periodicity)
+    assert isinstance(policy, Policy)
+    assert policy.number == policy_number
+    assert policy.customer == customer
+    assert policy.periodicity == periodicity

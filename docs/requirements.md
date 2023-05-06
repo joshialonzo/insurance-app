@@ -1,6 +1,6 @@
 ## Requirements
 
-* Read the 'payments' document and register: agentes, contratantes, polizas, and payments.
+* Read the 'payments' document and register: agentes, contratantes, policies, and payments.
 * Read the 'poliza' document and register old payments with existing poliza.
 * See the list of payments for each poliza.
 * Append the new payments to the list of payments
@@ -66,9 +66,9 @@
 
 * Read 'data' folder
 * Read 'insurance-app' folder
-* Open and read 'polizas' file
+* Open and read 'policies' file
 * Open and read 'payments' file
-* Read all the 'polizas' columns
+* Read all the 'policies' columns
 * Read all the 'payments' columns
 
 ## Ideas

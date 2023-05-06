@@ -3,6 +3,7 @@ from insurance.services import (
     create_customer,
     create_agent,
     create_policy,
+    create_validity,
 )
 
 
@@ -42,3 +43,17 @@ def test_create_policy_with_number():
     assert policy.number == policy_number
     assert policy.customer == customer
     assert policy.periodicity == periodicity
+
+
+def test_create_validity():
+    policy_number = 123456789
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    periodicity = "monthly"
+    policy = create_policy(policy_number, customer, periodicity)
+    start_date = "2021-01-01"
+    end_date = "2021-12-31"
+    validity = create_validity(policy, start_date, end_date)
+    assert validity.policy == policy
+    assert validity.start_date == start_date
+    assert validity.end_date == end_date

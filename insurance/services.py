@@ -1,4 +1,7 @@
-from insurance.models import (Agent, Customer, Policy)
+from insurance.models import (
+    Agent, Customer,
+    Policy, Validity,
+)
 
 
 def create_customer(policy_holder, customer_number=0):
@@ -13,8 +16,8 @@ def create_policy(policy_number, customer, periodicity):
     return Policy(policy_number, customer, periodicity)
 
 
-def create_validity():
-    pass
+def create_validity(policy, start_date, end_date):
+    return Validity(policy, start_date, end_date)
 
 
 def create_payment():

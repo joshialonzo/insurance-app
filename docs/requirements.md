@@ -1,13 +1,13 @@
 ## Requirements
 
 * Read the 'payments' document and register: agentes, contratantes, policies, and payments.
-* Read the 'poliza' document and register old payments with existing poliza.
-* See the list of payments for each poliza.
+* Read the 'policies' document and register old payments with existing policy.
+* See the list of payments for each policy.
 * Append the new payments to the list of payments
 * Compute the date of the last payments for each user.
 * Compute the date of the next payments for each user.
-* Compute the list of customers with monthly poliza that has 5/4/3/2/1 days to pay.
-* Compute the list of customers with non-monthly poliza that has 5/4/3/2/1 days or 3/2/1 weeks to pay.
+* Compute the list of customers with monthly policy that has 5/4/3/2/1 days to pay.
+* Compute the list of customers with non-monthly policy that has 5/4/3/2/1 days or 3/2/1 weeks to pay.
 * Create an UI to upload 'payments' file.
 * Create an UI to upload 'policies' file.
 
@@ -33,7 +33,7 @@
     * name -> payments.csv -> Nombre de agente
 
 * Policy
-    * number -> payments.csv -> Poliza
+    * number -> payments.csv -> policy
     * contratante
     * periodicity -> payments.csv -> Forma de pago
 
@@ -64,12 +64,26 @@
 
 ## To Do list
 
-* Read 'data' folder
-* Read 'insurance-app' folder
-* Open and read 'policies' file
-* Open and read 'payments' file
-* Read all the 'policies' columns
-* Read all the 'payments' columns
+✅ Read 'data' folder.
+✅ Read 'insurance-app' folder.
+✅ Open and read 'payments' file.
+TODO: Create a customer with idempotency.
+TODO: Create an agent with idempotency.
+TODO: Create a policy with idempotency.
+TODO: Create a validity with idempotency.
+TODO: Create a payment with idempotency.
+TODO: Create all the payments with idempotency.
+TODO: Implement storage with CSV files in a 'db' folder.
+TODO: Read all the policies stored in the storage.
+TODO: Feed the storage with the 'policies' file.
+TODO: Get the list of payments for each policy.
+TODO: Compute the next payment for each customer.
+TODO: Compute the date of the last payments for each user.
+TODO: Compute the date of the next payments for each user.
+TODO: Compute the list of customers with monthly policy that has 5/4/3/2/1 days to pay.
+TODO: Compute the list of customers with non-monthly policy that has 5/4/3/2/1 days or 3/2/1 weeks to pay.
+TODO: Create an UI to upload 'payments' file.
+TODO: Create an UI to upload 'policies' file.
 
 ## Ideas
 

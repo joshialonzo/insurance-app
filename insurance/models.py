@@ -60,6 +60,7 @@ class Payment:
             self,
             payment_amount: Union[int, Decimal],
             validity: Validity,
+            agent: Agent,
             date: date,
             status: Literal["normal"] = "normal",
             payment_method: Literal[
@@ -74,6 +75,7 @@ class Payment:
     ):
         self.payment_amount = Decimal(payment_amount)
         self.validity = validity
+        self.agent = agent
         self.date = date
         self.status = status
         self.payment_method = payment_method

@@ -22,14 +22,14 @@ def create_validity(policy, start_date, end_date):
 
 
 def create_payment(
-        payment_amount, validity, date,
+        payment_amount, validity, agent, date,
         status, payment_method, surcharge_amount,
-        issuance_fee, amount_tax, endorsement_number,
+        issuance_fee, amount_tax, net_amount, endorsement_number,
 ):
     return Payment(
-        payment_amount, validity, date,
+        payment_amount, validity, agent, date,
         status, payment_method, surcharge_amount,
-        issuance_fee, amount_tax, endorsement_number,
+        issuance_fee, amount_tax, net_amount, endorsement_number,
     )
 
 
@@ -53,7 +53,8 @@ def create_customer_agent_policy_and_payment(line: list):
     )
     payment = create_payment(
         payment_amount,
-        validity, payment_date, status,
+        validity, agent,
+        payment_date, status,
         payment_method, surcharge_amount,
         issuance_fee, amount_tax,
         endorsement_number,

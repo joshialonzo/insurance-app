@@ -61,6 +61,9 @@ def test_create_validity():
 
 
 def test_create_payment():
+    agent_number = 123456789
+    agent_name = "John Doe"
+    agent = create_agent(agent_name, agent_number)
     policy_number = 123456789
     policy_holder = "John Doe"
     customer = create_customer(policy_holder)
@@ -76,12 +79,14 @@ def test_create_payment():
     surcharge_amount = 0
     issuance_fee = 0
     amount_tax = 0
+    net_amount = 100
     endorsement_number = 0
     payment = create_payment(
         payment_amount,
-        validity, payment_date, status,
+        validity, agent,
+        payment_date, status,
         payment_method, surcharge_amount,
-        issuance_fee, amount_tax,
+        issuance_fee, amount_tax, net_amount,
         endorsement_number,
     )
     assert payment.payment_amount == payment_amount
@@ -92,4 +97,5 @@ def test_create_payment():
     assert payment.surcharge_amount == surcharge_amount
     assert payment.issuance_fee == issuance_fee
     assert payment.amount_tax == amount_tax
+    assert payment.net_amount == net_amount
     assert payment.endorsement_number == endorsement_number

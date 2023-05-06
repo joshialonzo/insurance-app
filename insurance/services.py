@@ -1,12 +1,12 @@
-from insurance.models import Customer
+from insurance.models import (Agent, Customer)
 
 
 def create_customer(policy_holder, customer_number=0):
     return Customer(policy_holder, customer_number)
 
 
-def create_agent():
-    pass
+def create_agent(agent_number, agent_name):
+    return Agent(agent_number, agent_name)
 
 
 def create_policy():

@@ -1,5 +1,6 @@
 from insurance.models import (
     Agent, Customer,
+    Payment,
     Policy, Validity,
 )
 
@@ -20,8 +21,16 @@ def create_validity(policy, start_date, end_date):
     return Validity(policy, start_date, end_date)
 
 
-def create_payment():
-    pass
+def create_payment(
+        payment_amount, validity, date,
+        status, payment_method, surcharge_amount,
+        issuance_fee, amount_tax, endorsement_number,
+):
+    return Payment(
+        payment_amount, validity, date,
+        status, payment_method, surcharge_amount,
+        issuance_fee, amount_tax, endorsement_number,
+    )
 
 
 def create_customer_agent_policy_and_payment(line: list):

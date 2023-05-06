@@ -73,5 +73,5 @@
 
 ## Ideas
 
-* Use React Native for a Desktop application
-* User React Native for a Web Application
+* Use React, Electron, and Python to create a Desktop Application.
+* Use React, FastAPI, and Firebase to create a Web Application.

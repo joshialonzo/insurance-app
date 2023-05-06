@@ -131,6 +131,11 @@ def test_create_payment_with_line():
     # create payment with line
     cleaned_payment_amount = DecimalSanitizer(payment_amount).sanitize()
     cleaned_payment_date = DateSanitizer(data=payment_date).sanitize()
+    cleaned_status = WordSanitizer(field="status", data=status).sanitize()
+    cleaned_payment_method = WordSanitizer(
+        field="payment_method",
+        data=payment_method,
+    ).sanitize()
     cleaned_surcharge_amount = DecimalSanitizer(surcharge_amount).sanitize()
     cleaned_issuance_fee = DecimalSanitizer(issuance_fee).sanitize()
     cleaned_amount_tax = DecimalSanitizer(amount_tax).sanitize()
@@ -138,7 +143,7 @@ def test_create_payment_with_line():
     cleaned_endorsement_number = IntegerSanitizer(endorsement_number).sanitize()
     payment = create_payment(
         cleaned_payment_amount, validity, agent,
-        cleaned_payment_date, status, payment_method,
+        cleaned_payment_date, cleaned_status, cleaned_payment_method,
         cleaned_surcharge_amount, cleaned_issuance_fee,
         cleaned_amount_tax, cleaned_net_amount, cleaned_endorsement_number,
     )
@@ -146,8 +151,8 @@ def test_create_payment_with_line():
     assert payment.agent == agent
     assert payment.payment_amount == cleaned_payment_amount
     assert payment.date == cleaned_payment_date
-    assert payment.status == status
-    assert payment.payment_method == payment_method
+    assert payment.status == cleaned_status
+    assert payment.payment_method == cleaned_payment_method
     assert payment.surcharge_amount == cleaned_surcharge_amount
     assert payment.issuance_fee == cleaned_issuance_fee
     assert payment.amount_tax == cleaned_amount_tax

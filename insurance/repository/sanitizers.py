@@ -14,7 +14,15 @@ class WordSanitizer:
             "SEMESTRAL S REC": "biannual",
             "ANUAL": "annual",
             "ANUAL S REC": "annual",
-        }        
+        },
+        "status": {
+            "PAGO NORM.": "normal",
+        },
+        "payment_method": {
+            "TARJ.CRED.": "credit",
+            "AMEX": "amex",
+            "TAR DEBITO": "debit",
+        },
     }
 
     def __init__(self, field, data):

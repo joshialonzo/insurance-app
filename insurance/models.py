@@ -5,9 +5,9 @@ from typing import Literal, Union
 
 
 class User:
-    def __init__(self, number, name):
-        self.number: int = number
+    def __init__(self, name, number=0):
         self.name: int = name
+        self.number: int = number
 
 
 class Customer(User):
@@ -58,28 +58,34 @@ class Validity:
 class Payment:
     def __init__(
             self,
+            payment_amount: Union[int, Decimal],
             validity: Validity,
             date: date,
             status: Literal["normal"] = "normal",
-            payment_type: Literal[
+            payment_method: Literal[
                 "debit", "credit",
                 "amex", "agent",
             ] = "debit",
-            surcharge: Union[int, Decimal] = 0,
+            surcharge_amount: Union[int, Decimal] = 0,
             issuance_fee: Union[int, Decimal] = 0,
-            taxes: Union[int, Decimal] = 0,
+            amount_tax: Union[int, Decimal] = 0,
             net_amount: Union[int, Decimal] = 0,
-            endorsement_id: Union[int, Decimal] = 0,
+            endorsement_number: Union[int, Decimal] = 0,
     ):
+        self.payment_amount = Decimal(payment_amount)
         self.validity = validity
         self.date = date
         self.status = status
-        self.payment_type = payment_type
-        self.surcharge = surcharge
+        self.payment_method = payment_method
+        self.surcharge_amount = surcharge_amount
         self.issuance_fee = issuance_fee
-        self.taxes = taxes
+        self.amount_tax = amount_tax
         self.net_amount = net_amount
-        self.endorsement_id = endorsement_id
+        self.endorsement_number = endorsement_number
+    
+    def validate_net_amount(self):
+        """Validate the net amount"""
+        pass
 
 
 class Report:

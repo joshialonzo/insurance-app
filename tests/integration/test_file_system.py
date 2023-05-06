@@ -21,3 +21,10 @@ def test_file_path_content():
     storage = Storage(file=file)
     content = storage.file_path_content()
     assert len(content) > 0
+
+
+def test_file_path_lines():
+    file = "payments.csv"
+    storage = Storage(file=file)
+    lines = storage.file_path_lines()
+    assert len(lines) > 0

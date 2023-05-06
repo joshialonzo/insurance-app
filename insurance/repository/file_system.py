@@ -27,5 +27,8 @@ class Storage:
         """
         Read the content of the CSV file.
         """
+        if not self.file_path_exists():
+            return []
+
         lines = self.file_path_content()
         return lines[2:]

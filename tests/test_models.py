@@ -42,6 +42,15 @@ def test_create_agent_with_number():
     assert agent.number == agent_number
 
 
+def test_create_agent_with_idempotency():
+    agent_number = 123456789
+    agent_name = "John Doe"
+    agent = create_agent(agent_name, agent_number)
+    Agent.register(agent)
+    Agent.register(agent)
+    assert len(Agent.all()) == 1
+
+
 def test_create_policy_with_number():
     policy_number = 123456789
     policy_holder = "John Doe"

@@ -23,7 +23,15 @@ class Customer(User):
 
 
 class Agent(User):
-    pass
+    __agents = set()
+
+    @classmethod
+    def register(cls, agent):
+        cls.__agents.add(agent)
+    
+    @classmethod
+    def all(cls):
+        return cls.__agents
 
 
 class Policy:

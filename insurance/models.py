@@ -92,6 +92,16 @@ class Validity:
 
 
 class Payment:
+    __payments = set()
+
+    @classmethod
+    def register(cls, payment):
+        cls.__payments.add(payment)
+    
+    @classmethod
+    def all(cls):
+        return cls.__payments
+
     def __init__(
             self,
             payment_amount: Union[int, Decimal],

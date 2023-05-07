@@ -71,7 +71,7 @@
 ✅ Create an agent with idempotency.
 ✅ Create a policy with idempotency.
 ✅ Create a validity with idempotency.
-TODO: Create a payment with idempotency.
+✅ Create a payment with idempotency.
 TODO: Create all the payments with idempotency.
 TODO: Implement storage with CSV files in a 'db' folder.
 TODO: Read all the policies stored in the storage.

@@ -1,4 +1,7 @@
-from insurance.models import Agent, Customer, Policy, Validity
+from insurance.models import (
+    Agent, Customer,
+    Payment, Policy, Validity,
+)
 from insurance.services import (
     create_customer,
     create_agent,
@@ -141,3 +144,37 @@ def test_create_payment():
     assert payment.amount_tax == amount_tax
     assert payment.net_amount == net_amount
     assert payment.endorsement_number == endorsement_number
+
+
+def test_create_payment_with_idempotency():
+    agent_number = 123456789
+    agent_name = "John Doe"
+    agent = create_agent(agent_name, agent_number)
+    policy_number = 123456789
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    periodicity = "monthly"
+    policy = create_policy(policy_number, customer, periodicity)
+    start_date = "2021-01-01"
+    end_date = "2021-12-31"
+    validity = create_validity(policy, start_date, end_date)
+    payment_amount = 100
+    payment_date = "2021-01-01"
+    status = "paid"
+    payment_method = "credit_card"
+    surcharge_amount = 0
+    issuance_fee = 0
+    amount_tax = 0
+    net_amount = 100
+    endorsement_number = 0
+    payment = create_payment(
+        payment_amount,
+        validity, agent,
+        payment_date, status,
+        payment_method, surcharge_amount,
+        issuance_fee, amount_tax, net_amount,
+        endorsement_number,
+    )
+    Payment.register(payment)
+    Payment.register(payment)
+    assert len(Payment.all()) == 1

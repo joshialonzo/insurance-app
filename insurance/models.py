@@ -60,6 +60,16 @@ class Policy:
 
 
 class Validity:
+    __validities = set()
+
+    @classmethod
+    def register(cls, validity):
+        cls.__validities.add(validity)
+    
+    @classmethod
+    def all(cls):
+        return cls.__validities
+
     def __init__(
             self,
             policy: Policy,

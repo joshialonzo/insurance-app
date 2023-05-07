@@ -1,4 +1,4 @@
-from insurance.models import Agent, Customer, Policy
+from insurance.models import Agent, Customer, Policy, Validity
 from insurance.services import (
     create_customer,
     create_agent,
@@ -86,6 +86,20 @@ def test_create_validity():
     assert validity.policy == policy
     assert validity.start_date == start_date
     assert validity.end_date == end_date
+
+
+def test_create_validity_with_idempotency():
+    policy_number = 123456789
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    periodicity = "monthly"
+    policy = create_policy(policy_number, customer, periodicity)
+    start_date = "2021-01-01"
+    end_date = "2021-12-31"
+    validity = create_validity(policy, start_date, end_date)
+    Validity.register(validity)
+    Validity.register(validity)
+    assert len(Validity.all()) == 1
 
 
 def test_create_payment():

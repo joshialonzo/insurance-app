@@ -35,6 +35,16 @@ class Agent(User):
 
 
 class Policy:
+    __policies = set()
+
+    @classmethod
+    def register(cls, policy):
+        cls.__policies.add(policy)
+    
+    @classmethod
+    def all(cls):
+        return cls.__policies
+
     def __init__(
             self,
             number: int,

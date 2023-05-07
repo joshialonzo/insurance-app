@@ -63,6 +63,17 @@ def test_create_policy_with_number():
     assert policy.periodicity == periodicity
 
 
+def test_create_policy_with_idempotency():
+    policy_number = 123456789
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    periodicity = "monthly"
+    policy = create_policy(policy_number, customer, periodicity)
+    Policy.register(policy)
+    Policy.register(policy)
+    assert len(Policy.all()) == 1
+
+
 def test_create_validity():
     policy_number = 123456789
     policy_holder = "John Doe"

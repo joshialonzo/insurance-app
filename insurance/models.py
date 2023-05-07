@@ -11,7 +11,15 @@ class User:
 
 
 class Customer(User):
-    pass
+    __customers = set()
+
+    @classmethod
+    def register(cls, customer):
+        cls.__customers.add(customer)
+    
+    @classmethod
+    def all(cls):
+        return cls.__customers
 
 
 class Agent(User):

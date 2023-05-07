@@ -25,6 +25,14 @@ def test_create_customer_with_number():
     assert customer.number == customer_number
 
 
+def test_create_customer_with_idempotency():
+    policy_holder = "John Doe"
+    customer = create_customer(policy_holder)
+    Customer.register(customer)
+    Customer.register(customer)
+    assert len(Customer.all()) == 1
+
+
 def test_create_agent_with_number():
     agent_number = 123456789
     agent_name = "John Doe"

@@ -67,7 +67,7 @@
 ✅ Read 'data' folder.
 ✅ Read 'insurance-app' folder.
 ✅ Open and read 'payments' file.
-TODO: Create a customer with idempotency.
+✅ Create a customer with idempotency.
 TODO: Create an agent with idempotency.
 TODO: Create a policy with idempotency.
 TODO: Create a validity with idempotency.

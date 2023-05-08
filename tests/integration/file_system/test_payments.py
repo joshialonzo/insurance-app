@@ -1,8 +1,9 @@
 from decimal import Decimal
 
 from insurance.repository.sanitizers import WordSanitizer
-from insurance.repository.file_system import Storage
+from insurance.repository.input.file_system import FileSystem
 from insurance.models import Agent, Customer, Policy
+from insurance.repository.storage.memory import MemoryStorage
 from insurance.services import (
     create_customer,
     create_agent,
@@ -15,37 +16,56 @@ from insurance.services import (
 def get_first_line():
     """Retrieve first line from file"""
     file = "payments.csv"
-    storage = Storage(file=file)
-    lines = storage.file_path_lines()
+    file_system = FileSystem(file=file)
+    lines = file_system.file_path_lines()
     first_line = lines[0]
     return first_line
 
 
 def test_create_customer_with_line():
+    # initialize the storage
+    storage = MemoryStorage()
+
     # retrieve first line from file
     first_line = get_first_line()
 
     # create customer with line
     _, _, _, customer_name, *_ = first_line
-    customer = create_customer(customer_name)
+    storage, customer = create_customer(
+        storage,
+        customer_name,
+    )
     assert isinstance(customer, Customer)
     assert customer.name == customer_name
     assert customer.number == 0
+    assert len(storage.get_customers()) == 1
 
 
 def test_create_agent_with_line():
+    # initialize the storage
+    storage = MemoryStorage()
+
     # retrieve first line from file
     first_line = get_first_line()
 
     # create agent with line
     agent_number, agent_name, *_ = first_line
-    agent = create_agent(agent_name, agent_number)
+    storage, agent = create_agent(
+        storage,
+        agent_name,
+        agent_number,
+    )
+
     assert isinstance(agent, Agent)
     assert agent.name == agent_name
     assert agent.number == agent_number
+    assert len(storage.get_agents()) == 1
 
 
 def test_create_policy_with_line():
+    # initialize the storage
+    storage = MemoryStorage()
+
     # retrieve first line from file
     first_line = get_first_line()
 
@@ -54,14 +74,19 @@ def test_create_policy_with_line():
     customer = Customer(name=customer_name)
     sanitizer = WordSanitizer(field="periodicity", data=periodicity)
     cleaned_periodicity = sanitizer.sanitize()
-    policy = create_policy(policy_number, customer, cleaned_periodicity)
+    storage, policy = create_policy(storage, customer, policy_number, cleaned_periodicity)
+
     assert isinstance(policy, Policy)
     assert policy.number == policy_number
     assert policy.customer == customer
     assert policy.periodicity == cleaned_periodicity
+    assert len(storage.get_policies()) == 1
 
 
 def test_create_validity_with_line():
+    # initialize the storage
+    storage = MemoryStorage()
+
     # retrieve first line from file
     first_line = get_first_line()
 
@@ -71,15 +96,33 @@ def test_create_validity_with_line():
     periodicity = first_line[4]
     start_date = first_line[8]
     end_date = first_line[9]
-    customer = create_customer(customer_name)
-    policy = create_policy(policy_number, customer, periodicity)
-    validity = create_validity(policy, start_date, end_date)
+    storage, customer = create_customer(
+        storage,
+        customer_name,
+    )
+    storage, policy = create_policy(
+        storage,
+        policy_number,
+        customer,
+        periodicity,
+    )
+    storage, validity = create_validity(
+        storage,
+        policy,
+        start_date,
+        end_date,
+    )
+
     assert validity.policy == policy
     assert validity.start_date == "2023-03-30"
     assert validity.end_date == "2023-04-30"
+    assert len(storage.get_validities()) == 1
 
 
 def test_create_payment_with_line():
+    # initialize the storage
+    storage = MemoryStorage()
+
     # retrieve fields from first line
     first_line = get_first_line()
     (
@@ -92,11 +135,26 @@ def test_create_payment_with_line():
     ) = first_line
 
     # create agent, customer, policy, validity, payment
-    agent = create_agent(agent_name, agent_number)
-    customer = create_customer(policy_holder)
-    policy = create_policy(policy_number, customer, periodicity)
-    validity = create_validity(policy, validity_start, validity_end)
-    payment = create_payment(
+    storage, agent = create_agent(
+        storage,
+        agent_name,
+        agent_number,
+    )
+    storage, customer = create_customer(storage, policy_holder)
+    storage, policy = create_policy(
+        storage,
+        policy_number,
+        customer,
+        periodicity,
+    )
+    storage, validity = create_validity(
+        storage,
+        policy,
+        validity_start,
+        validity_end,
+    )
+    storage, payment = create_payment(
+        storage,
         payment_amount, validity, agent,
         payment_date, status,
         payment_method, net_amount,
@@ -115,3 +173,4 @@ def test_create_payment_with_line():
     assert payment.issuance_fee == 0
     assert payment.amount_tax == Decimal("109.33")
     assert payment.endorsement_number == 279484
+    assert len(storage.get_payments()) == 1

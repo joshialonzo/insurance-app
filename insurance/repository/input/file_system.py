@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 
 
-class Storage:
+class FileSystem:
     def __init__(self, file):
         self.file = file
 

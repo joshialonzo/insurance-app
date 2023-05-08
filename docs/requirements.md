@@ -73,7 +73,7 @@
 ✅ Create a validity with idempotency.
 ✅ Create a payment with idempotency.
 ✅ Create line objects.
-TODO: Create line objects with idempotency.
+✅ Create line objects with idempotency.
 TODO: Create all the payments with idempotency.
 TODO: Implement storage with CSV files in a 'db' folder.
 TODO: Read all the policies stored in the storage.

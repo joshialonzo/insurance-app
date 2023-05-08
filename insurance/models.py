@@ -10,41 +10,44 @@ class User:
         self.number: int = number
 
 
-class Customer(User):
-    __customers = set()
+class Customer(User):    
+    def __repr__(self) -> str:
+        return f"({self.name}, {self.number})"
 
-    @classmethod
-    def register(cls, customer):
-        cls.__customers.add(customer)
-    
-    @classmethod
-    def all(cls):
-        return cls.__customers
+    def __str__(self) -> str:
+        return f"({self.name}, {self.number})"
+
+    def __eq__(self, other):
+        if not isinstance(other, Customer):
+            return False
+        return (
+            other.name == self.name
+            and
+            other.number == self.number
+        )
+
+    def __hash__(self):
+        return hash(f"{self.name}{self.number}")
 
 
 class Agent(User):
-    __agents = set()
+    def __repr__(self) -> str:
+        return f"({self.name}, {self.number})"
 
-    @classmethod
-    def register(cls, agent):
-        cls.__agents.add(agent)
-    
-    @classmethod
-    def all(cls):
-        return cls.__agents
+    def __eq__(self, other):
+        if not isinstance(other, Agent):
+            return False
+        return (
+            other.name == self.name
+            and
+            other.number == self.number
+        )
+
+    def __hash__(self):
+        return hash(f"{self.name}{self.number}")
 
 
 class Policy:
-    __policies = set()
-
-    @classmethod
-    def register(cls, policy):
-        cls.__policies.add(policy)
-    
-    @classmethod
-    def all(cls):
-        return cls.__policies
-
     def __init__(
             self,
             number: int,
@@ -57,29 +60,58 @@ class Policy:
         self.number = number
         self.customer = customer
         self.periodicity = periodicity
+    
+    def __str__(self) -> str:
+        return (
+            f"Number: {self.number}, "
+            f"Customer: {self.customer}"
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, Policy):
+            return False
+        return (
+            other.number == self.number
+            and
+            other.customer == self.customer
+        )
+
+    def __hash__(self):
+        return hash(self.number)
 
 
 class Validity:
-    __validities = set()
-
-    @classmethod
-    def register(cls, validity):
-        cls.__validities.add(validity)
-    
-    @classmethod
-    def all(cls):
-        return cls.__validities
-
     def __init__(
             self,
             policy: Policy,
-            start_date: date,
-            end_date: date,
+            start_date: str,
+            end_date: str,
     ):
         self.policy = policy
         self.start_date = start_date
         self.end_date = end_date
     
+    def __str__(self) -> str:
+        return (
+            f"Policy: {self.policy.number} "
+            f"from {self.start_date} "
+            f"to {self.end_date}"
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, Validity):
+            return False
+        return (
+            other.policy == self.policy
+            and
+            other.start_date == self.start_date
+            and
+            other.end_date == self.end_date
+        )
+
+    def __hash__(self):
+        return hash(f"{self.policy}{self.start_date}{self.end_date}")
+
     @property
     def month(self) -> str:
         """Use calendar library to get the month"""
@@ -92,16 +124,6 @@ class Validity:
 
 
 class Payment:
-    __payments = set()
-
-    @classmethod
-    def register(cls, payment):
-        cls.__payments.add(payment)
-    
-    @classmethod
-    def all(cls):
-        return cls.__payments
-
     def __init__(
             self,
             payment_amount: Union[int, Decimal],
@@ -130,7 +152,19 @@ class Payment:
         self.amount_tax = amount_tax
         self.net_amount = net_amount
         self.endorsement_number = endorsement_number
-    
+
+    def __eq__(self, other):
+        if not isinstance(other, Payment):
+            return False
+        return (
+            other.validity == self.validity
+            and
+            other.endorsement_number == self.endorsement_number
+        )
+
+    def __hash__(self):
+        return hash(str(self.validity))
+
     def validate_net_amount(self):
         """Validate the net amount"""
         pass

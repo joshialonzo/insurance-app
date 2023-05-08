@@ -4,10 +4,14 @@ from insurance.models import (
     Agent, Customer,
     Payment, Policy, Validity,
 )
+from insurance.repository.storage.memory import MemoryStorage
 from insurance.services import create_customer_agent_policy_and_payment
 
 
 def test_create_customer_agent_policy_and_payment():
+    # initialize the storage
+    storage = MemoryStorage()
+
     line = [
         13496, # agent number
         "John Doe Agent", # agent name
@@ -26,13 +30,16 @@ def test_create_customer_agent_policy_and_payment():
         109.33, # amount tax
         279484, # endorsement number
     ]
+
     (
+        storage,
         customer,
         agent,
         policy,
         validity,
         payment,
-    ) = create_customer_agent_policy_and_payment(line)
+    ) = create_customer_agent_policy_and_payment(storage, line)
+
     assert isinstance(customer, Customer)
     assert isinstance(agent, Agent)
     assert isinstance(policy, Policy)
@@ -59,3 +66,37 @@ def test_create_customer_agent_policy_and_payment():
     assert payment.issuance_fee == 0
     assert payment.amount_tax == Decimal("109.33")
     assert payment.endorsement_number == 279484
+    assert len(storage.get_payments()) == 1
+
+
+def test_create_customer_agent_policy_and_payment_with_idempotency():
+    # initialize the storage
+    storage = MemoryStorage()
+
+    line = [
+        13496, # agent number
+        "John Doe Agent", # agent name
+        1018099, # policy number
+        "John Doe Customer", # policy holder
+        "MENSUAL S REC", # periodicity
+        "PAGO NORM.", # status
+        792.64, # payment amount
+        "05/04/2023", # payment date
+        "30/03/2023", # validity start
+        "30/04/2023", # validity end
+        "TARJ.CRED.", # payment method
+        683.31, # net amount
+        0, # surcharge amount
+        0, # issuance fee
+        109.33, # amount tax
+        279484, # endorsement number
+    ]
+    
+    storage, *_ = create_customer_agent_policy_and_payment(storage, line)
+    storage, *_ = create_customer_agent_policy_and_payment(storage, line)
+
+    assert len(storage.get_customers()) == 1
+    assert len(storage.get_agents()) == 1
+    assert len(storage.get_policies()) == 1
+    assert len(storage.get_validities()) == 1
+    assert len(storage.get_payments()) == 1

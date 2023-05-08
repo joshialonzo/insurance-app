@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from insurance.models import (
     Agent, Customer,
     Payment, Policy, Validity,
@@ -83,12 +85,12 @@ def test_create_validity():
     customer = create_customer(policy_holder)
     periodicity = "monthly"
     policy = create_policy(policy_number, customer, periodicity)
-    start_date = "2021-01-01"
-    end_date = "2021-12-31"
+    start_date = "01/01/2021"
+    end_date = "31/12/2021"
     validity = create_validity(policy, start_date, end_date)
     assert validity.policy == policy
-    assert validity.start_date == start_date
-    assert validity.end_date == end_date
+    assert validity.start_date == "2021-01-01"
+    assert validity.end_date == "2021-12-31"
 
 
 def test_create_validity_with_idempotency():
@@ -97,8 +99,8 @@ def test_create_validity_with_idempotency():
     customer = create_customer(policy_holder)
     periodicity = "monthly"
     policy = create_policy(policy_number, customer, periodicity)
-    start_date = "2021-01-01"
-    end_date = "2021-12-31"
+    start_date = "01/01/2021"
+    end_date = "31/12/2021"
     validity = create_validity(policy, start_date, end_date)
     Validity.register(validity)
     Validity.register(validity)
@@ -114,13 +116,13 @@ def test_create_payment():
     customer = create_customer(policy_holder)
     periodicity = "monthly"
     policy = create_policy(policy_number, customer, periodicity)
-    start_date = "2021-01-01"
-    end_date = "2021-12-31"
+    start_date = "01/01/2021"
+    end_date = "31/12/2021"
     validity = create_validity(policy, start_date, end_date)
     payment_amount = 100
-    payment_date = "2021-01-01"
-    status = "paid"
-    payment_method = "credit_card"
+    payment_date = "01/01/2021"
+    status = "PAGO NORM."
+    payment_method = "TARJ.CRED."
     surcharge_amount = 0
     issuance_fee = 0
     amount_tax = 0
@@ -130,20 +132,23 @@ def test_create_payment():
         payment_amount,
         validity, agent,
         payment_date, status,
-        payment_method, surcharge_amount,
-        issuance_fee, amount_tax, net_amount,
+        payment_method,
+        net_amount,
+        surcharge_amount,
+        issuance_fee,
+        amount_tax,
         endorsement_number,
     )
-    assert payment.payment_amount == payment_amount
+    assert payment.payment_amount == Decimal(100)
     assert payment.validity == validity
-    assert payment.date == payment_date
-    assert payment.status == status
-    assert payment.payment_method == payment_method
-    assert payment.surcharge_amount == surcharge_amount
-    assert payment.issuance_fee == issuance_fee
-    assert payment.amount_tax == amount_tax
-    assert payment.net_amount == net_amount
-    assert payment.endorsement_number == endorsement_number
+    assert payment.date == "2021-01-01"
+    assert payment.status == "normal"
+    assert payment.payment_method == "credit"
+    assert payment.surcharge_amount == 0
+    assert payment.issuance_fee == 0
+    assert payment.amount_tax == 0
+    assert payment.net_amount == Decimal(100)
+    assert payment.endorsement_number == 0
 
 
 def test_create_payment_with_idempotency():
@@ -155,13 +160,13 @@ def test_create_payment_with_idempotency():
     customer = create_customer(policy_holder)
     periodicity = "monthly"
     policy = create_policy(policy_number, customer, periodicity)
-    start_date = "2021-01-01"
-    end_date = "2021-12-31"
+    start_date = "01/01/2021"
+    end_date = "31/12/2021"
     validity = create_validity(policy, start_date, end_date)
     payment_amount = 100
-    payment_date = "2021-01-01"
-    status = "paid"
-    payment_method = "credit_card"
+    payment_date = "01/01/2021"
+    status = "PAGO NORM."
+    payment_method = "TARJ.CRED."
     surcharge_amount = 0
     issuance_fee = 0
     amount_tax = 0

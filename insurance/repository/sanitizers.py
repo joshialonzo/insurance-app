@@ -8,20 +8,28 @@ class WordSanitizer:
         "periodicity": {
             "MENSUAL": "monthly",
             "MENSUAL S REC": "monthly",
+            "monthly": "monthly",
             "TRIMESTRAL": "quarterly",
             "TRIMESTRAL S RC": "quarterly",
+            "quarterly": "quarterly",
             "SEMESTRAL": "biannual",
             "SEMESTRAL S REC": "biannual",
+            "biannual": "biannual",
             "ANUAL": "annual",
             "ANUAL S REC": "annual",
+            "annual": "annual",
         },
         "status": {
             "PAGO NORM.": "normal",
+            "normal": "normal",
         },
         "payment_method": {
             "TARJ.CRED.": "credit",
+            "credit": "credit",
             "AMEX": "amex",
+            "amex": "amex",
             "TAR DEBITO": "debit",
+            "debit": "debit",
         },
     }
 
@@ -59,7 +67,10 @@ class DecimalSanitizer:
     
     def sanitize(self):
         """Transform string to decimal."""
-        return Decimal(self.data)
+        return round(
+            Decimal(str(self.data)),
+            ndigits=2,
+        )
 
 
 class IntegerSanitizer:

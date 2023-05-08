@@ -1,7 +1,6 @@
-from insurance.repository.sanitizers import (
-    DateSanitizer, DecimalSanitizer,
-    IntegerSanitizer, WordSanitizer,
-)
+from decimal import Decimal
+
+from insurance.repository.sanitizers import WordSanitizer
 from insurance.repository.file_system import Storage
 from insurance.models import Agent, Customer, Policy
 from insurance.services import (
@@ -67,36 +66,22 @@ def test_create_validity_with_line():
     first_line = get_first_line()
 
     # create validity with line
-    (
-        _, _, policy_number, customer_name,
-        periodicity, _, _,
-        start_date, end_date, *_
-    ) = first_line
-    customer = Customer(name=customer_name)
-
-    cleaned_periodicity = WordSanitizer(
-        field="periodicity",
-        data=periodicity
-    ).sanitize()
-    cleaned_start_date = DateSanitizer(data=start_date).sanitize()
-    cleaned_end_date = DateSanitizer(data=end_date).sanitize()
-
-    policy = Policy(
-        number=policy_number,
-        customer=customer,
-        periodicity=cleaned_periodicity
-    )
-    validity = create_validity(policy, cleaned_start_date, cleaned_end_date)
+    policy_number = first_line[2]
+    customer_name = first_line[3]
+    periodicity = first_line[4]
+    start_date = first_line[8]
+    end_date = first_line[9]
+    customer = create_customer(customer_name)
+    policy = create_policy(policy_number, customer, periodicity)
+    validity = create_validity(policy, start_date, end_date)
     assert validity.policy == policy
-    assert validity.start_date == cleaned_start_date
-    assert validity.end_date == cleaned_end_date
+    assert validity.start_date == "2023-03-30"
+    assert validity.end_date == "2023-04-30"
 
 
 def test_create_payment_with_line():
-    # retrieve first line from file
-    first_line = get_first_line()
-
     # retrieve fields from first line
+    first_line = get_first_line()
     (
         agent_number, agent_name,
         policy_number, policy_holder,
@@ -106,54 +91,27 @@ def test_create_payment_with_line():
         issuance_fee, amount_tax, endorsement_number
     ) = first_line
 
-    # create agent with line
-    agent = Agent(name=agent_name, number=agent_number)
-
-    # create customer with line
-    customer = Customer(name=policy_holder)
-
-    # create policy with line
-    cleaned_periodicity = WordSanitizer(
-        field="periodicity",
-        data=periodicity
-    ).sanitize()
-    policy = Policy(
-        number=policy_number,
-        customer=customer,
-        periodicity=cleaned_periodicity
-    )
-
-    # create validity with line
-    cleaned_start_date = DateSanitizer(data=validity_start).sanitize()
-    cleaned_end_date = DateSanitizer(data=validity_end).sanitize()
-    validity = create_validity(policy, cleaned_start_date, cleaned_end_date)
-
-    # create payment with line
-    cleaned_payment_amount = DecimalSanitizer(payment_amount).sanitize()
-    cleaned_payment_date = DateSanitizer(data=payment_date).sanitize()
-    cleaned_status = WordSanitizer(field="status", data=status).sanitize()
-    cleaned_payment_method = WordSanitizer(
-        field="payment_method",
-        data=payment_method,
-    ).sanitize()
-    cleaned_surcharge_amount = DecimalSanitizer(surcharge_amount).sanitize()
-    cleaned_issuance_fee = DecimalSanitizer(issuance_fee).sanitize()
-    cleaned_amount_tax = DecimalSanitizer(amount_tax).sanitize()
-    cleaned_net_amount = DecimalSanitizer(net_amount).sanitize()
-    cleaned_endorsement_number = IntegerSanitizer(endorsement_number).sanitize()
+    # create agent, customer, policy, validity, payment
+    agent = create_agent(agent_name, agent_number)
+    customer = create_customer(policy_holder)
+    policy = create_policy(policy_number, customer, periodicity)
+    validity = create_validity(policy, validity_start, validity_end)
     payment = create_payment(
-        cleaned_payment_amount, validity, agent,
-        cleaned_payment_date, cleaned_status, cleaned_payment_method,
-        cleaned_surcharge_amount, cleaned_issuance_fee,
-        cleaned_amount_tax, cleaned_net_amount, cleaned_endorsement_number,
+        payment_amount, validity, agent,
+        payment_date, status,
+        payment_method, net_amount,
+        surcharge_amount, issuance_fee,
+        amount_tax, endorsement_number,
     )
+
+    # assert payment fields
     assert payment.validity == validity
     assert payment.agent == agent
-    assert payment.payment_amount == cleaned_payment_amount
-    assert payment.date == cleaned_payment_date
-    assert payment.status == cleaned_status
-    assert payment.payment_method == cleaned_payment_method
-    assert payment.surcharge_amount == cleaned_surcharge_amount
-    assert payment.issuance_fee == cleaned_issuance_fee
-    assert payment.amount_tax == cleaned_amount_tax
-    assert payment.endorsement_number == cleaned_endorsement_number
+    assert payment.payment_amount == Decimal("792.64")
+    assert payment.date == "2023-04-05"
+    assert payment.status == "normal"
+    assert payment.payment_method == "credit"
+    assert payment.surcharge_amount == 0
+    assert payment.issuance_fee == 0
+    assert payment.amount_tax == Decimal("109.33")
+    assert payment.endorsement_number == 279484

@@ -176,3 +176,15 @@ def register_payment_line(storage: Storage, line: list):
     )
 
     return (storage, customer, agent, policy, validity, payment)
+
+
+def register_payment_lines(storage: Storage, lines: list):
+    registered = []
+    for line in lines:
+        (
+            storage, *objects
+        ) = register_payment_line(
+            storage, line,
+        )
+        registered.append(objects)
+    return storage, registered

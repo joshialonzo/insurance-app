@@ -3,13 +3,20 @@ from pathlib import Path
 
 
 class FileSystem:
-    def __init__(self, file):
+    def __init__(
+        self,
+        file: str,
+        folder: str = "data/insurance",
+        first_row: int = 2,
+    ):
         self.file = file
+        self.folder = folder
+        self.first_row = first_row
 
     @property
     def file_path(self):
         home = Path.home()
-        folder = home / "data" / "insurance"
+        folder = home / self.folder
         return folder / self.file
 
     def file_path_exists(self):
@@ -31,4 +38,4 @@ class FileSystem:
             return []
 
         lines = self.file_path_content()
-        return lines[2:]
+        return lines[self.first_row:]

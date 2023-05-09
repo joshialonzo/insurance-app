@@ -5,10 +5,10 @@ from insurance.models import (
     Payment, Policy, Validity,
 )
 from insurance.repository.storage.memory import MemoryStorage
-from insurance.services import create_customer_agent_policy_and_payment
+from insurance.services import register_payment_line
 
 
-def test_create_customer_agent_policy_and_payment():
+def test_register_payment_line():
     # initialize the storage
     storage = MemoryStorage()
 
@@ -38,7 +38,7 @@ def test_create_customer_agent_policy_and_payment():
         policy,
         validity,
         payment,
-    ) = create_customer_agent_policy_and_payment(storage, line)
+    ) = register_payment_line(storage, line)
 
     assert isinstance(customer, Customer)
     assert isinstance(agent, Agent)
@@ -69,7 +69,7 @@ def test_create_customer_agent_policy_and_payment():
     assert len(storage.get_payments()) == 1
 
 
-def test_create_customer_agent_policy_and_payment_with_idempotency():
+def test_register_payment_line_with_idempotency():
     # initialize the storage
     storage = MemoryStorage()
 
@@ -92,8 +92,8 @@ def test_create_customer_agent_policy_and_payment_with_idempotency():
         279484, # endorsement number
     ]
     
-    storage, *_ = create_customer_agent_policy_and_payment(storage, line)
-    storage, *_ = create_customer_agent_policy_and_payment(storage, line)
+    storage, *_ = register_payment_line(storage, line)
+    storage, *_ = register_payment_line(storage, line)
 
     assert len(storage.get_customers()) == 1
     assert len(storage.get_agents()) == 1

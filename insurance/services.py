@@ -145,7 +145,7 @@ def create_payment(
     return storage, payment
 
 
-def create_customer_agent_policy_and_payment(storage: Storage, line: list):
+def register_payment_line(storage: Storage, line: list):
     (
         agent_number, agent_name,
         policy_number, policy_holder,

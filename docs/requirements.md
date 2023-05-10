@@ -75,9 +75,7 @@
 ✅ Create line objects.
 ✅ Create line objects with idempotency.
 ✅ Create all the payments with idempotency.
-TODO: Implement storage with CSV files in a 'db' folder.
-TODO: Read all the policies stored in the storage.
-TODO: Feed the storage with the 'policies' file.
+TODO: Read all the policies stored in the memory storage.
 TODO: Get the list of payments for each policy.
 TODO: Compute the next payment for each customer.
 TODO: Compute the date of the last payments for each user.
@@ -86,6 +84,8 @@ TODO: Compute the list of customers with monthly policy that has 5/4/3/2/1 days 
 TODO: Compute the list of customers with non-monthly policy that has 5/4/3/2/1 days or 3/2/1 weeks to pay.
 TODO: Create an UI to upload 'payments' file.
 TODO: Create an UI to upload 'policies' file.
+TODO: Implement storage with CSV files in a 'db' folder.
+TODO: Feed the storage with the 'policies' file.
 
 ## Ideas
 

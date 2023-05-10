@@ -1,7 +1,3 @@
-from datetime import datetime
-from decimal import Decimal
-
-
 class WordSanitizer:
     """Sanitizer class for sanitizing words."""
     DICTIONARY = {
@@ -24,6 +20,7 @@ class WordSanitizer:
             "normal": "normal",
         },
         "payment_method": {
+            "AGENTE": "agent",
             "TARJ.CRED.": "credit",
             "credit": "credit",
             "AMEX": "amex",
@@ -41,43 +38,3 @@ class WordSanitizer:
     def sanitize(self):
         """Sanitize data."""
         return self.DICTIONARY[self.field][self.data]
-
-
-class DateSanitizer:
-    def __init__(self, format="%d/%m/%Y", data=None):
-        """Initialize DateSanitizer class."""
-        self.format = format
-        self.data = data
-
-    def sanitize(self):
-        """
-        Transform date with day/month/year format
-        to year-month-day format.
-        Example: 30/03/2023 -> 2023-03-30
-        """
-        date = datetime.strptime(self.data, self.format)
-        date_string = date.strftime("%Y-%m-%d")
-        return date_string
-
-
-class DecimalSanitizer:
-    def __init__(self, data):
-        """Initialize DecimalSanitizer class."""
-        self.data = data
-    
-    def sanitize(self):
-        """Transform string to decimal."""
-        return round(
-            Decimal(str(self.data)),
-            ndigits=2,
-        )
-
-
-class IntegerSanitizer:
-    def __init__(self, data):
-        """Initialize IntegerSanitizer class."""
-        self.data = data
-    
-    def sanitize(self):
-        """Transform string to decimal."""
-        return int(self.data)

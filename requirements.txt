@@ -1,1 +1,6 @@
+# cli
+typer
+colorama
+shellingham
+# testing
 pytest

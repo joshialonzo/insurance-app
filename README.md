@@ -9,3 +9,4 @@ This repository contains information about the requirements and business logic, 
 * [Requirements](docs/requirements.md)
 * [Development](docs/development.md)
 * [Deployment](docs/deployment.md)
+* [Command Line](docs/cli.md)

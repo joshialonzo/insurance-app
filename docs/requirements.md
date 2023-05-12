@@ -75,7 +75,10 @@
 ✅ Create line objects.
 ✅ Create line objects with idempotency.
 ✅ Create all the payments with idempotency.
-TODO: Create a CLI to load 'payments' file.
+TODO: CLI command to register a customer.
+TODO: CLI command to register an agent.
+TODO: CLI command to register a policy.
+TODO: CLI command to load 'payments' file.
 TODO: Read all the policies stored in the memory storage.
 TODO: Get the list of payments for each policy.
 TODO: Compute the next payment for each customer.
@@ -83,10 +86,9 @@ TODO: Compute the date of the last payments for each user.
 TODO: Compute the date of the next payments for each user.
 TODO: Compute the list of customers with monthly policy that has 5/4/3/2/1 days to pay.
 TODO: Compute the list of customers with non-monthly policy that has 5/4/3/2/1 days or 3/2/1 weeks to pay.
-TODO: Create a CLI to load 'policies' file.
+TODO: CLI command to load 'policies' file.
 TODO: Create an GUI to upload 'payments' file.
 TODO: Create an GUI to upload 'policies' file.
-TODO: Implement storage with CSV files in a 'db' folder.
 TODO: Feed the storage with the 'policies' file.
 
 ## Ideas

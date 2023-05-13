@@ -29,6 +29,12 @@ class Customer(User):
     def __hash__(self) -> int:
         return hash(f"{self.name}{self.number}")
 
+    def to_json(self):
+        return {
+            "name": self.name,
+            "number": self.number,
+        }
+
 
 class Agent(User):
     def __eq__(self, other):
@@ -42,6 +48,12 @@ class Agent(User):
 
     def __hash__(self) -> int:
         return hash(f"{self.name}{self.number}")
+
+    def to_json(self):
+        return {
+            "name": self.name,
+            "number": self.number,
+        }
 
 
 class Policy:
@@ -75,6 +87,13 @@ class Policy:
 
     def __hash__(self):
         return hash(self.number)
+    
+    def to_json(self):
+        return {
+            "number": self.number,
+            "customer": self.customer.to_json(),
+            "periodicity": self.periodicity,
+        }
 
 
 class Validity:
@@ -118,6 +137,13 @@ class Validity:
     def year(self):
         """Use calendar library to get the year"""
         pass
+
+    def to_json(self):
+        return {
+            "policy": self.policy.to_json(),
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+        }
 
 
 class Payment:
@@ -165,6 +191,21 @@ class Payment:
     def validate_net_amount(self):
         """Validate the net amount"""
         pass
+
+    def to_json(self):
+        return {
+            "payment_amount": self.payment_amount,
+            "validity": self.validity.to_json(),
+            "agent": self.agent.to_json(),
+            "date": self.date,
+            "status": self.status,
+            "payment_method": self.payment_method,
+            "surcharge_amount": self.surcharge_amount,
+            "issuance_fee": self.issuance_fee,
+            "amount_tax": self.amount_tax,
+            "net_amount": self.net_amount,
+            "endorsement_number": self.endorsement_number,
+        }
 
 
 class Report:

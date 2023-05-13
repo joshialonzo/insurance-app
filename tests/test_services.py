@@ -1,4 +1,7 @@
 from decimal import Decimal
+from tempfile import NamedTemporaryFile
+
+from pytest import fixture
 
 from insurance.models import (
     Agent, Customer,
@@ -7,6 +10,17 @@ from insurance.models import (
 from insurance.repository.storage.memory import MemoryStorage
 from insurance.services import register_payment_line
 from insurance.services import register_payment_lines
+
+
+@fixture()
+def database_json_file():
+    # create temporary json file
+    temp_file = NamedTemporaryFile(suffix=".json")
+    temp_filename = temp_file.name
+    # yield the temporary file and its name
+    yield temp_file, temp_filename
+    # close and delete the temporary file
+    temp_file.close()
 
 
 def test_register_payment_line():
@@ -217,3 +231,8 @@ def test_register_payment_lines():
     assert payment_2.endorsement_number == 279484
 
     assert len(storage.get_payments()) == 2
+
+
+def test_temporary_file(database_json_file):
+    temp_file, temp_filename = database_json_file
+    assert temp_file

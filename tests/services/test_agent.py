@@ -1,0 +1,1 @@
+from insurance.repository.storage.memory import MemoryStorage

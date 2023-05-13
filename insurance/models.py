@@ -9,14 +9,14 @@ class User:
         self.name: int = name
         self.number: int = number
 
-
-class Customer(User):    
     def __repr__(self) -> str:
         return f"({self.name}, {self.number})"
 
     def __str__(self) -> str:
         return f"({self.name}, {self.number})"
 
+
+class Customer(User):
     def __eq__(self, other):
         if not isinstance(other, Customer):
             return False
@@ -26,14 +26,11 @@ class Customer(User):
             other.number == self.number
         )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(f"{self.name}{self.number}")
 
 
 class Agent(User):
-    def __repr__(self) -> str:
-        return f"({self.name}, {self.number})"
-
     def __eq__(self, other):
         if not isinstance(other, Agent):
             return False
@@ -43,7 +40,7 @@ class Agent(User):
             other.number == self.number
         )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(f"{self.name}{self.number}")
 
 

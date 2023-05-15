@@ -45,6 +45,17 @@ class DBResponse(NamedTuple):
 class JsonStorage(Storage):
     def __init__(self, db_path: Path) -> None:
         self._db_path = db_path
+    
+    def create_file(self) -> None:
+        with self._db_path.open("w") as db:
+            schema = {
+                "customers": {},
+                "agents": {},
+                "policies": {},
+                "validities": {},
+                "payments": {},
+            }
+            json.dump(schema, db, indent=4)
 
     def add_customer(self, customer: Customer) -> DBResponse:
         try:

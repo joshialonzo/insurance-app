@@ -56,6 +56,9 @@ class JsonStorage(Storage):
                 "payments": {},
             }
             json.dump(schema, db, indent=4)
+    
+    def remove_file(self) -> None:
+        self._db_path.unlink()
 
     def add_customer(self, customer: Customer) -> DBResponse:
         try:

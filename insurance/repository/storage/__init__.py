@@ -1,3 +1,24 @@
+"""
+Storage interface is an abstract class that defines the methods that must be implemented by a storage class.
+Storage child classes must implement the following methods:
+
+    - add_customer
+    - get_customers
+    - add_agent
+    - get_agents
+    - add_policy
+    - get_policies
+    - add_validity
+    - get_validities
+    - add_payment
+    - get_payments
+
+The Storage class and the Storage implementations must be declared.
+Both are an application of the Bridge design pattern.
+Both classes are in the Repository layer.
+"""
+
+
 from abc import ABC, abstractmethod
 
 

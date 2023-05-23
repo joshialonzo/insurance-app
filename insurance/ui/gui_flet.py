@@ -14,8 +14,14 @@ def get_flet_args(fn, mode="web"):
 
 def main(page: ft.Page):
     # add/update controls on Page
-    pass
+    t = ft.Text(
+        value="Insurance App",
+        color="blue",
+        size=40,
+    )
+    page.controls.append(t)
+    page.update()
 
 
-kwargs = get_flet_args(fn=main)
+kwargs = get_flet_args(fn=main, mode="desktop")
 ft.app(**kwargs)

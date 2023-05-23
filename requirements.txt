@@ -4,3 +4,5 @@ colorama
 shellingham
 # testing
 pytest
+# gui
+flet
